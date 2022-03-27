@@ -5,6 +5,7 @@ import allLocales from "@fullcalendar/core/locales-all";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 
 import styled from "styled-components";
+import { SchedulePopup } from "./SchedulePopup";
 
 const thisMonth = () => {
   const today = new Date();
@@ -17,11 +18,14 @@ const thisMonth = () => {
 export const Calender = () => {
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleDateClick = useCallback((arg: DateClickArg) => {
-    setOpenDialog(!openDialog);
-    console.log(openDialog);
-    // alert(arg.dateStr);
-  }, []);
+  const handleDateClick = useCallback(
+    (arg: DateClickArg) => {
+      setOpenDialog(!openDialog);
+      console.log(openDialog);
+      // alert(arg.dateStr);
+    },
+    [openDialog]
+  );
   return (
     <SContainer>
       <FullCalender
