@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import FullCalender from "@fullcalendar/react";
 import dayGridPlagin from "@fullcalendar/daygrid";
 import allLocales from "@fullcalendar/core/locales-all";
@@ -15,8 +15,12 @@ const thisMonth = () => {
 };
 
 export const Calender = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   const handleDateClick = useCallback((arg: DateClickArg) => {
-    alert(arg.dateStr);
+    setOpenDialog(!openDialog);
+    console.log(openDialog);
+    // alert(arg.dateStr);
   }, []);
   return (
     <SContainer>
