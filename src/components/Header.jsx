@@ -15,4 +15,7 @@ const SContainer = styled.div`
   background-color: #0072bc;
   text-align: left;
   color: #fff;
+  position: fixed;
+  top: 0;
+  z-index: 1;
 `;

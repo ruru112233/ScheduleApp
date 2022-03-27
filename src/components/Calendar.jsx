@@ -4,6 +4,8 @@ import dayGridPlagin from "@fullcalendar/daygrid";
 import allLocales from "@fullcalendar/core/locales-all";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 
+import styled from "styled-components";
+
 const thisMonth = () => {
   const today = new Date();
   return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
@@ -17,7 +19,7 @@ export const Calender = () => {
     alert(arg.dateStr);
   }, []);
   return (
-    <div>
+    <SContainer>
       <FullCalender
         // events={[
         //   { title: "event 1", date: `${thisMonth()}-01` },
@@ -30,6 +32,12 @@ export const Calender = () => {
         initialView="dayGridMonth"
         dateClick={handleDateClick}
       />
-    </div>
+    </SContainer>
   );
 };
+
+const SContainer = styled.div`
+  width: 100%;
+  /* overflow: auto; */
+  z-index: 5;
+`;
