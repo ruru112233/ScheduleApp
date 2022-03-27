@@ -11,7 +11,11 @@ import dayGridPlagin from "@fullcalendar/daygrid";
 export const Calender = () => {
   return (
     <div>
-      <FullCalender plugins={[dayGridPlagin]} initialView="dayGridMonth" />
+      <FullCalender
+        locale="jp"
+        plugins={[dayGridPlagin]}
+        initialView="dayGridMonth"
+      />
     </div>
   );
   // console.log("レンダリンされた");
