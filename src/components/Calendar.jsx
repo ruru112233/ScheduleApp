@@ -6,6 +6,8 @@ import allLocales from "@fullcalendar/core/locales-all";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
 import DatePicker, { registerLocale } from "react-datepicker";
 
+import ja from "date-fns/locale/ja";
+
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 import styled from "styled-components";
@@ -45,6 +47,15 @@ const useStyles = makeStyles(() => {
     }
   });
 });
+
+registerLocale("ja", ja);
+
+interface myEventsType {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+}
 
 const thisMonth = () => {
   const today = new Date();
