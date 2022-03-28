@@ -52,6 +52,11 @@ export const Calender = () => {
           year: "numeric",
           month: "short"
         }}
+        headerToolbar={{
+          start: "title",
+          center: "prev, next, today",
+          end: "dayGridMonth, timeGridWeek"
+        }}
       />
     </SContainer>
   );
