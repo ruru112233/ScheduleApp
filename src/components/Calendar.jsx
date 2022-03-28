@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
 import FullCalender from "@fullcalendar/react";
+import timeGridPlagin from "@fullcalendar/timegrid";
 import dayGridPlagin from "@fullcalendar/daygrid";
 import allLocales from "@fullcalendar/core/locales-all";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
@@ -36,9 +37,21 @@ export const Calender = () => {
         locales={allLocales}
         locale="jp"
         // plugins={[dayGridPlagin]}
-        plugins={[dayGridPlagin, interactionPlugin]}
-        initialView="dayGridMonth"
+        plugins={[timeGridPlagin, dayGridPlagin, interactionPlugin]}
+        initialView="timeGridWeek"
         dateClick={handleDateClick}
+        slotDuration="00:30:00"
+        selectable={true}
+        businessHours={{
+          daysOfWeek: [1, 2, 3, 4, 5],
+          startTime: "00:00",
+          endTime: "24:00"
+        }}
+        weekends={true}
+        titleFormat={{
+          year: "numeric",
+          month: "short"
+        }}
       />
     </SContainer>
   );
