@@ -11,9 +11,6 @@ import ja from "date-fns/locale/ja";
 import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 import styled from "styled-components";
-import { SchedulePopup } from "./SchedulePopup";
-import id from "date-fns/esm/locale/id/index.js";
-import { areIntervalsOverlapping } from "date-fns/esm";
 
 const useStyles = makeStyles(() => {
   createStyles({
