@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 import FullCalender from "@fullcalendar/react";
 import timeGridPlagin from "@fullcalendar/timegrid";
 import dayGridPlagin from "@fullcalendar/daygrid";
@@ -12,6 +12,8 @@ import { createStyles, makeStyles } from "@material-ui/core/styles";
 
 import styled from "styled-components";
 import { SchedulePopup } from "./SchedulePopup";
+import id from "date-fns/esm/locale/id/index.js";
+import { areIntervalsOverlapping } from "date-fns/esm";
 
 const useStyles = makeStyles(() => {
   createStyles({
@@ -50,12 +52,26 @@ const useStyles = makeStyles(() => {
 
 registerLocale("ja", ja);
 
-interface myEventsType {
-  id: number;
-  title: string;
-  start: Date;
-  end: Date;
-}
+// interface myEventsType {
+//   id: number;
+//   title: string;
+//   start: Date;
+//   end: Date;
+// }
+
+const myEventsType = (props) => {
+  const { id, title, start, end } = props;
+  const obj = [
+    {
+      id: id,
+      title: title,
+      start: start,
+      end: end
+    }
+  ];
+
+  return obj;
+};
 
 const thisMonth = () => {
   const today = new Date();
@@ -66,15 +82,157 @@ const thisMonth = () => {
 };
 
 export const Calender = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const classes = useStyles();
 
-  const handleDateClick = useCallback(
-    (arg: DateClickArg) => {
-      setOpenDialog(!openDialog);
-      console.log(openDialog);
-      // alert(arg.dateStr);
-    },
-    [openDialog]
+  // const handleDateClick = useCallback((arg) => {
+  // console.log(ref.current);
+  //   alert(arg.dateStr);
+  // });
+
+  const ref = React.createRef();
+
+  const [inputTitle, setInputTitle] = useState("");
+  const [inputStart, setInputStart] = useState(new Date());
+  const [inputEnd, setInputEnd] = useState(new Date());
+  const [inView, setInView] = useState(false);
+  const [myEvents, setMyEvents] = useState(myEventsType("", "", "", ""));
+
+  const handleClick = (info) => {
+    const event = myEvents[info.event.id];
+    const title = event.title;
+    const start = event.start;
+    const end = event.end;
+
+    setInputTitle(title);
+    setInputStart(start);
+    setInputEnd(end);
+    setInView(true);
+  };
+
+  const handleSelect = (selectInfo) => {
+    const start = new Date(selectInfo.start);
+    const end = new Date(selectInfo.end);
+    start.setHours(start.getHours());
+    end.setHours(end.getHours());
+
+    setInputTitle("");
+    setInputStart(start);
+    setInputEnd(end);
+    setInView(true);
+  };
+
+  // カレンダーに予定を追加する
+
+  const onAddEvent = () => {
+    const startTime = inputStart;
+    const endTime = inputEnd;
+
+    if (startTime >= endTime) {
+      alert("開始時間と終了時間を確認してください");
+      return;
+    }
+
+    const event = {
+      id: myEvents.length,
+      title: inputTitle,
+      start: startTime,
+      end: endTime
+    };
+
+    setMyEvents([...myEvents, event]);
+    ref.current.getApi().addEvent(event);
+  };
+
+  const coverElement = (
+    <div
+      onClick={() => setInView(false)}
+      className={inView ? `${classes.cover} ${classes.inView}` : classes.cover}
+    />
+  );
+
+  const titleElement = (
+    <div>
+      <label>タイトル</label>
+      <input
+        type="text"
+        value={inputTitle}
+        name="inputTitle"
+        onChange={(e) => {
+          setInputTitle(e.target.value);
+        }}
+      />
+    </div>
+  );
+
+  const startTimeElement = (
+    <div>
+      <label>開始</label>
+      <DatePicker
+        local="jp"
+        dateFormat="yyyy/MM/d HH:mm"
+        selected={inputStart}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={10}
+        todayButton="today"
+        name="inputStart"
+        onChange={(time) => {
+          setInputStart(time);
+        }}
+      />
+    </div>
+  );
+
+  const endTimeElement = (
+    <div>
+      <label>終了</label>
+      <DatePicker
+        local="jp"
+        dateFormat="yyyy/MM/d HH:mm"
+        selected={inputStart}
+        showTimeSelect
+        timeFormat="HH:mm"
+        timeIntervals={10}
+        todayButton="today"
+        name="inputStart"
+        onChange={(time) => {
+          setInputEnd(time);
+        }}
+      />
+    </div>
+  );
+
+  const btnElement = (
+    <div>
+      <input
+        type="button"
+        value="キャンセル"
+        onClick={() => {
+          setInView(false);
+        }}
+      />
+      <input
+        type="button"
+        value="保存"
+        onClick={() => {
+          onAddEvent();
+        }}
+      />
+    </div>
+  );
+
+  const formElement = (
+    <div
+      className={inView ? `${classes.form} ${classes.inView}` : classes.form}
+    >
+      <form>
+        <div>予定を入力</div>
+        {titleElement}
+        {startTimeElement}
+        {endTimeElement}
+        {btnElement}
+      </form>
+    </div>
   );
 
   return (
@@ -89,7 +247,7 @@ export const Calender = () => {
         // plugins={[dayGridPlagin]}
         plugins={[timeGridPlagin, dayGridPlagin, interactionPlugin]}
         initialView="timeGridWeek"
-        dateClick={handleDateClick}
+        // dateClick={handleDateClick}
         slotDuration="00:30:00"
         selectable={true}
         businessHours={{
