@@ -237,6 +237,8 @@ export const Calender = () => {
 
   return (
     <SContainer>
+      {coverElement}
+      {formElement}
       <FullCalender
         // events={[
         //   { title: "event 1", date: `${thisMonth()}-01` },
@@ -265,6 +267,9 @@ export const Calender = () => {
           center: "prev, next, today",
           end: "dayGridMonth, timeGridWeek"
         }}
+        ref={ref}
+        eventClick={handleClick}
+        select={handleSelect}
       />
     </SContainer>
   );
