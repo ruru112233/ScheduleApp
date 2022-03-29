@@ -186,12 +186,12 @@ export const Calender = () => {
       <DatePicker
         local="jp"
         dateFormat="yyyy/MM/d HH:mm"
-        selected={inputStart}
+        selected={inputEnd}
         showTimeSelect
         timeFormat="HH:mm"
         timeIntervals={10}
         todayButton="today"
-        name="inputStart"
+        name="inputEnd"
         onChange={(time) => {
           setInputEnd(time);
         }}
